@@ -15,6 +15,7 @@ void setup() {
   digitalWrite(LED_PIN, LOW);
   Serial.begin(9600);
   dht.begin();
+  //Serial.println("Arduino ready");
 }
 
 void loop() {
@@ -22,7 +23,7 @@ void loop() {
     char command = Serial.read();
 
     if (command == '1') {//svet
-      digitalWrite(LED_PIN, HIGH);      //вкл выкл светодиод
+      digitalWrite(LED_PIN, HIGH);      //вкл выкл реле + светодиод
       Serial.println("LED:ON");
     }
     else if (command == '0') {
@@ -81,7 +82,7 @@ void loop() {
       float t = dht.readTemperature();
 
       if (isnan(h) || isnan(t)) {
-        Serial.println("ERR:Sensor read failed");
+        Serial.println("ERROR:Sensor read failed");
         return;
       }
 
