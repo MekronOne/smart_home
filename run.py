@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import serial
 
 import app.arduino as arduino_mod 
 from app.arduino import connect
@@ -18,18 +17,18 @@ async def cmd_start(message: Message):
     await message.answer('привет!!!\nэтот бот используется для управления умным домом\n',
                          reply_markup=kb.main)#hi massage
 
-@dp.message(F.text == "RGB MOD")#TODO:добавить выход из мода ргб ГОТОВО!!
+@dp.message(F.text == "RGB MOD")                    #TODO:добавить выход из мода ргб ГОТОВО!!
 async def helpGet(message: Message):
     await message.answer('RGB MOD ON!!!',
                          reply_markup=kb.rgb)
     
-@dp.message(F.text == "Exit")#TODO:добавить выход из мода ргб ГОТОВО!!
+@dp.message(F.text == "Exit")                      #TODO:добавить выход из мода ргб ГОТОВО!!
 async def helpGet(message: Message):
     await message.answer('RGB MOD OFF!!!',
                          reply_markup=kb.main)
 
 @dp.message(F.text == "Включить свет")  
-async def cmd_on_text(message: Message):#TODO: убрать отладочную шнягу со всех команд бота!!!!
+async def cmd_on_text(message: Message):                        #TODO: убрать отладочную шнягу со всех команд бота!!!!
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'1')
@@ -39,7 +38,7 @@ async def cmd_on_text(message: Message):#TODO: убрать отладочную
     else:
         await message.answer("no conection")
 
-@dp.message(F.text == "Выключить свет")#TODO: добавить такую функцию для rgb led #ГОТОВО
+@dp.message(F.text == "Выключить свет")                 #TODO: добавить такую функцию для rgb led #ГОТОВО
 async def cmd_off_text(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
@@ -141,10 +140,10 @@ async def cmd_on_text(message: Message):
     else:
         await message.answer("no conection")
 
+                                                        #TODO: убрать тестовые приколы!!!!!!!
 
-#TODO: убрать тестовые приколы!!!!!!!
 
-@dp.message(F.text == "beep")                     #beep!!!
+@dp.message(F.text == "beep")                           #beep!!!
 async def cmd_off_text(message: Message):           
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
@@ -155,27 +154,37 @@ async def cmd_off_text(message: Message):
     else:
         await message.answer("no conection")
 
-@dp.message(F.text == "температура/влажность комнаты")
-async def cmd_off_text(message: Message):
-    if not arduino_mod.arduino or not arduino_mod.arduino.is_open:
-        await message.answer("no conection")
-        return
+# @dp.message(F.text == "температура/влажность комнаты")
+# async def cmd_off_text(message: Message):
+#     if not arduino_mod.arduino or not arduino_mod.arduino.is_open:
+#         await message.answer("no conection")
+#         return
 
-    try:
-        arduino_mod.write(b't')
-        arduino_mod.flush()                                           #очистка буфера ос для предотврашения потери данных
-        response = await asyncio.to_thread(arduino_mod.readline)
+#     try:
+#         arduino_mod.write(b't')
+#         arduino_mod.flush()                                           #очистка буфера ос для предотврашения потери данных
+#         response = await asyncio.to_thread(arduino_mod.readline)
         
-        if response:
-            temp = response.decode('utf-8', errors='ignore').strip()
-            await message.answer(temp)
-        else:
-            await message.answer("timeout")
+#         if response:
+#             temp = response.decode('utf-8', errors='ignore').strip()
+#             await message.answer(temp)
+#         else:
+#             await message.answer("timeout")
             
-    except serial.SerialException as e:
-        await message.answer(f"err: {e}")
-    except Exception as e:
-        await message.answer(f"err: {e}")
+#     except serial.SerialException as e:
+#         await message.answer(f"err: {e}")
+#     except Exception as e:
+#         await message.answer(f"err: {e}")
+
+@dp.message(F.text == "температура/влажность комнаты")
+async def cmd_temp(message: Message):
+    response = await asyncio.to_thread(arduino_mod.get_sensor_data)             #вызов из файла ардуино
+    if response:
+        await message.answer(response)
+    else:
+        await message.answer("Ошибка: нет связи или данных")
+
+
            
 async def main():                   #connect
     connect()
