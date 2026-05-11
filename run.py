@@ -153,28 +153,7 @@ async def cmd_off_text(message: Message):
             await message.answer(f"err: {e}")
     else:
         await message.answer("no conection")
-
-# @dp.message(F.text == "температура/влажность комнаты")
-# async def cmd_off_text(message: Message):
-#     if not arduino_mod.arduino or not arduino_mod.arduino.is_open:
-#         await message.answer("no conection")
-#         return
-
-#     try:
-#         arduino_mod.write(b't')
-#         arduino_mod.flush()                                           #очистка буфера ос для предотврашения потери данных
-#         response = await asyncio.to_thread(arduino_mod.readline)
         
-#         if response:
-#             temp = response.decode('utf-8', errors='ignore').strip()
-#             await message.answer(temp)
-#         else:
-#             await message.answer("timeout")
-            
-#     except serial.SerialException as e:
-#         await message.answer(f"err: {e}")
-#     except Exception as e:
-#         await message.answer(f"err: {e}")
 
 @dp.message(F.text == "температура/влажность комнаты")
 async def cmd_temp(message: Message):
