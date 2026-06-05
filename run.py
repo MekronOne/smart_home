@@ -18,17 +18,17 @@ async def cmd_start(message: Message):
                          reply_markup=kb.main)#hi massage
 
 @dp.message(F.text == "RGB MOD")                    #TODO:добавить выход из мода ргб ГОТОВО!!
-async def helpGet(message: Message):
+async def rgbMod(message: Message):
     await message.answer('RGB MOD ON!!!',
                          reply_markup=kb.rgb)
     
 @dp.message(F.text == "Exit")                      #TODO:добавить выход из мода ргб ГОТОВО!!
-async def helpGet(message: Message):
+async def rgbModExit(message: Message):
     await message.answer('RGB MOD OFF!!!',
                          reply_markup=kb.main)
 
 @dp.message(F.text == "Включить свет")  
-async def cmd_on_text(message: Message):                        #TODO: убрать отладочную шнягу со всех команд бота!!!!
+async def led_on(message: Message):                        #TODO: убрать отладочную шнягу со всех команд бота!!!!
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'1')
@@ -39,7 +39,7 @@ async def cmd_on_text(message: Message):                        #TODO: убра�
         await message.answer("no conection")
 
 @dp.message(F.text == "Выключить свет")                 #TODO: добавить такую функцию для rgb led #ГОТОВО
-async def cmd_off_text(message: Message):
+async def led_off(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'0')
@@ -50,7 +50,7 @@ async def cmd_off_text(message: Message):
         await message.answer("no conection")
 
 @dp.message(F.text == "red")                    #RGB ON
-async def cmd_on_text(message: Message):
+async def redON(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'r')
@@ -61,7 +61,7 @@ async def cmd_on_text(message: Message):
         await message.answer("no conection")
 
 @dp.message(F.text == "green")  
-async def cmd_on_text(message: Message):
+async def greenON(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'g')
@@ -72,7 +72,7 @@ async def cmd_on_text(message: Message):
         await message.answer("no conection")
 
 @dp.message(F.text == "blue")  
-async def cmd_on_text(message: Message):
+async def blueON(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'b')
@@ -82,10 +82,8 @@ async def cmd_on_text(message: Message):
     else:
         await message.answer("no conection")         #RGB ON
 
-
-
 @dp.message(F.text == "red 0")                      #RGB OFF
-async def cmd_on_text(message: Message):
+async def redOFF(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'w')
@@ -96,7 +94,7 @@ async def cmd_on_text(message: Message):
         await message.answer("no conection")
 
 @dp.message(F.text == "green 0")  
-async def cmd_on_text(message: Message):
+async def greenOFF(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'e')
@@ -107,7 +105,7 @@ async def cmd_on_text(message: Message):
         await message.answer("no conection")
 
 @dp.message(F.text == "blue 0")  
-async def cmd_on_text(message: Message):
+async def blueOFF(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'q')
@@ -118,8 +116,8 @@ async def cmd_on_text(message: Message):
         await message.answer("no conection")            #RGB OFF
 
 
-@dp.message(F.text == "OFF ALL")  
-async def cmd_on_text(message: Message):
+@dp.message(F.text == "OFF ALL")  #выключает все цвета rgb
+async def OFFall(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'f')
@@ -129,8 +127,8 @@ async def cmd_on_text(message: Message):
     else:
         await message.answer("Нет связи")
 
-@dp.message(F.text == "ON ALL")  
-async def cmd_on_text(message: Message):
+@dp.message(F.text == "ON ALL")  #включает все цвета rgb
+async def ONall(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'o')
@@ -144,7 +142,7 @@ async def cmd_on_text(message: Message):
 
 
 @dp.message(F.text == "beep")                           #beep!!!
-async def cmd_off_text(message: Message):           
+async def beep(message: Message):
     if arduino_mod.arduino and arduino_mod.arduino.is_open:
         try:
             arduino_mod.write(b'd')
@@ -156,7 +154,7 @@ async def cmd_off_text(message: Message):
         
 
 @dp.message(F.text == "температура/влажность комнаты")
-async def cmd_temp(message: Message):
+async def temp(message: Message):
     response = await asyncio.to_thread(arduino_mod.get_sensor_data)             #вызов из файла ардуино
     if response:
         await message.answer(response)
