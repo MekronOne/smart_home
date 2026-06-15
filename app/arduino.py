@@ -1,5 +1,5 @@
 import serial
-ARDUINO_PORT = '/dev/ttyUSB0'
+ARDUINO_PORT = 'COM3'
 BAUD_RATE = 9600
 arduino = None
 
